@@ -1,5 +1,5 @@
 # sap-api-integrations-bank-master-creates  
-sap-api-integrations-bank-master-creates は、外部システム(特にエッジコンピューティング環境)をSAPと統合することを目的に、SAP API で 銀行マスタ データを取得するマイクロサービスです。  
+sap-api-integrations-bank-master-creates は、外部システム(特にエッジコンピューティング環境)をSAPと統合することを目的に、SAP API で 銀行マスタ データを登録するマイクロサービスです。  
 sap-api-integrations-bank-master-creates には、サンプルのAPI Json フォーマットが含まれています。  
 sap-api-integrations-bank-master-creates は、オンプレミス版である（＝クラウド版ではない）SAPS4HANA API の利用を前提としています。クラウド版APIを利用する場合は、ご注意ください。  
 https://api.sap.com/api/OP_API_BANK_0002/overview  
@@ -28,8 +28,8 @@ sap-api-integrations-bank-master-creates には、次の API をコールする�
 
 ## SAP API Bussiness Hub の API の選択的コール
 
-Latona および AION の SAP 関連リソースでは、Inputs フォルダ下の sample.json の accepter に取得したいデータの種別（＝APIの種別）を入力し、指定することができます。  
-なお、同 accepter にAll(もしくは空白)の値を入力することで、全データ（＝全APIの種別）をまとめて取得することができます。  
+Latona および AION の SAP 関連リソースでは、Inputs フォルダ下の sample.json の accepter に登録したいデータの種別（＝APIの種別）を入力し、指定することができます。  
+なお、同 accepter にAll(もしくは空白)の値を入力することで、全データ（＝全APIの種別）をまとめて登録することができます。  
 
 * sample.jsonの記載例(1)  
 
@@ -37,18 +37,18 @@ accepter において 下記の例のように、データの種別（＝APIの�
 ここでは、"Bank" が指定されています。    
   
 ```
-	"api_schema": "Bank",
+	"api_schema": "SAPBankMasterCreate",
 	"accepter": ["Bank"],
 	"bank_code": "20321",
 	"deleted": false
 ```
   
-* 全データを取得する際のsample.jsonの記載例(2)  
+* 全データを登録する際のsample.jsonの記載例(2)  
 
-全データを取得する場合、sample.json は以下のように記載します。  
+全データを登録する場合、sample.json は以下のように記載します。  
 
 ```
-	"api_schema": "Bank",
+	"api_schema": "SAPBankMasterCreate",
 	"accepter": ["All"],
 	"bank_code": "20321",
 	"deleted": false
@@ -59,14 +59,16 @@ accepter における データ種別 の指定に基づいて SAP_API_Caller �
 caller.go の func() 毎 の 以下の箇所が、指定された API をコールするソースコードです。  
 
 ```
-func (c *SAPAPICaller) AsyncGetBankMaster(bankCountry, bank string, accepter []string) {
+func (c *SAPAPICaller) AsyncPostBankMaster(
+	bank *requests.Bank,
+	accepter []string) {
 	wg := &sync.WaitGroup{}
 	wg.Add(len(accepter))
 	for _, fn := range accepter {
 		switch fn {
 		case "Bank":
 			func() {
-				c.Bank(bankCountry, bank)
+				c.Bank(bank)
 				wg.Done()
 			}()
 		default:
@@ -80,30 +82,9 @@ func (c *SAPAPICaller) AsyncGetBankMaster(bankCountry, bank string, accepter []s
 
 ## Output  
 本マイクロサービスでは、[golang-logging-library-for-sap](https://github.com/latonaio/golang-logging-library-for-sap) により、以下のようなデータがJSON形式で出力されます。  
-以下の sample.json の例は、SAP 銀行マスタ の 銀行データ が取得された結果の JSON の例です。  
+以下の sample.json の例は、SAP 銀行マスタ の 銀行データ が登録された結果の JSON の例です。  
 以下の項目のうち、"BankCountry" ～ "BankCategory" は、/SAP_API_Output_Formatter/type.go 内 の Type Bank {} による出力結果です。"cursor" ～ "time"は、golang-logging-library-for-sap による 定型フォーマットの出力結果です。  
 
 ```
-{
-	"cursor": "/Users/latona2/bitbucket/sap-api-integrations-bank-master-creates/SAP_API_Caller/caller.go#L53",
-	"function": "sap-api-integrations-bank-master-creates/SAP_API_Caller.(*SAPAPICaller).Bank",
-	"level": "INFO",
-	"message": [
-		{
-			"BankCountry": "AT",
-			"BankInternalID": "20321",
-			"BankName": "Allgemeine Sparkasse Oberösterreich - SAMPLE BANK",
-			"Region": "",
-			"ShortStreetName": "Vordere Zollamtsstrasse 13",
-			"ShortCityName": "Vienna 1030",
-			"SWIFTCode": "RHWMAT00",
-			"BankNetworkGrouping": "",
-			"IsMarkedForDeletion": false,
-			"Bank": "20321",
-			"BankBranch": "' '",
-			"BankCategory": ""
-		}
-	],
-	"time": "2022-01-27T17:33:40+09:00"
-}
+XXXX
 ```
