@@ -58,18 +58,18 @@ type SDC struct {
 	RedisKey      string `json:"redis_key"`
 	Filepath      string `json:"filepath"`
 	Bank          struct {
-		BankCountry         string `json:"BankCountry"`
-		Bank                string `json:"Bank"`
-		BankInternalID      string `json:"BankInternalID"`
-		BankName            string `json:"BankName"`
-		Region              string `json:"Region"`
-		ShortStreetName     string `json:"ShortStreetName"`
-		ShortCityName       string `json:"ShortCityName"`
-		SWIFTCode           string `json:"SWIFTCode"`
-		BankNetworkGrouping string `json:"BankNetworkGrouping"`
-		IsMarkedForDeletion string `json:"IsMarkedForDeletion"`
-		BankBranch          string `json:"BankBranch"`
-		BankCategory        string `json:"BankCategory"`
+		BankCountry         string  `json:"BankCountry"`
+		Bank                string  `json:"Bank"`
+		BankInternalID      *string `json:"BankInternalID"`
+		BankName            *string `json:"BankName"`
+		Region              *string `json:"Region"`
+		ShortStreetName     *string `json:"ShortStreetName"`
+		ShortCityName       *string `json:"ShortCityName"`
+		SWIFTCode           *string `json:"SWIFTCode"`
+		BankNetworkGrouping *string `json:"BankNetworkGrouping"`
+		//  IsMarkedForDeletion bool   `json:"IsMarkedForDeletion"`
+		BankBranch   *string `json:"BankBranch"`
+		BankCategory *string `json:"BankCategory"`
 	} `json:"Bank"`
 	APISchema string   `json:"api_schema"`
 	Accepter  []string `json:"accepter"`
