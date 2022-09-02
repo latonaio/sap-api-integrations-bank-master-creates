@@ -37,7 +37,7 @@ accepter において 下記の例のように、データの種別（＝APIの�
 ここでは、"Bank" が指定されています。    
   
 ```
-	"api_schema": "SAPBankMasterCreate",
+	"api_schema": "SAPBankMasterCreates",
 	"accepter": ["Bank"],
 	"bank_code": "20321",
 	"deleted": false
@@ -48,7 +48,7 @@ accepter において 下記の例のように、データの種別（＝APIの�
 全データを登録する場合、sample.json は以下のように記載します。  
 
 ```
-	"api_schema": "SAPBankMasterCreate",
+	"api_schema": "SAPBankMasterCreates",
 	"accepter": ["All"],
 	"bank_code": "20321",
 	"deleted": false

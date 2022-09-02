@@ -67,7 +67,7 @@ type SDC struct {
 		ShortCityName       *string `json:"ShortCityName"`
 		SWIFTCode           *string `json:"SWIFTCode"`
 		BankNetworkGrouping *string `json:"BankNetworkGrouping"`
-		//  IsMarkedForDeletion bool   `json:"IsMarkedForDeletion"`
+		IsMarkedForDeletion *bool   `json:"IsMarkedForDeletion"`
 		BankBranch   *string `json:"BankBranch"`
 		BankCategory *string `json:"BankCategory"`
 	} `json:"Bank"`
